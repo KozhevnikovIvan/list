@@ -48,22 +48,20 @@ void menu() {
 }
 
 void addition_elements(List &list) {
-	cout << "Введите новые элементы" << endl;
-	string new_elements;
-	int znachenie;
-	Node *curr = new Node{znachenie, nullptr};
-	cin.ignore(numeric_limits<streamsize>::max(), '\n');
-	getline(cin, new_elements);
-	for (int i = 0; i < new_elements.length(); i++){
-		if (new_elements[i] != ' ')
-			znachenie = znachenie * 10 + new_elements[i] - 48;
-		else{
-			input(list, znachenie);
-			znachenie = 0;
-		}
-		if (i == new_elements.length() - 1)
-			input(list,znachenie);
-	}
+  cout << "Введите новые элементы" << endl;
+  string new_elements;
+  int znachenie = 0;
+  cin.ignore(numeric_limits<streamsize>::max(), '\n');
+  getline(cin, new_elements);
+  for (int i = 0; i < new_elements.length(); i++) {
+    if (new_elements[i] != ' ')
+      znachenie = znachenie * 10 + new_elements[i] - 48;
+    else {
+      input(list, znachenie);
+      znachenie = 0;
+    }
+    if (i == new_elements.length() - 1) input(list, znachenie);
+  }
 }
 
 void delete_element(List &list) {
@@ -125,8 +123,54 @@ void find_pozitions(List &list) {
       pozitions++;
     curr = curr->next;
   }
+  if (element_availability == false) cout << "Элемент не найден" << endl;
+}
+
+void replace_element(List &list) {
+  cout << "Введите позицию и новое значение:" << endl;
+  int pozition = 0, new_element, i = 0;
+  cin >> pozition >> new_element;
+  bool element_availability = false;
+  Node *curr = list.first;
+  while (curr != nullptr) {
+    if (i == pozition) {
+      curr->znachenie = new_element;
+      element_availability = true;
+    }
+    curr = curr->next;
+    i++;
+  }
   if (element_availability == false)
-    cout << "Элемент не найден" << endl;
+    cout << "Элемент с данной позицией не существует";
+}
+
+void sort_elements(List &list) {
+  Node *curr = list.first;
+  int n = 0;
+  while (curr != nullptr) {
+    n++;
+    curr = curr->next;
+  }
+  curr = list.first;
+  int a[n];
+  for (int i = 0; i < n; i++) {
+    a[i] = curr->znachenie;
+    curr = curr->next;
+  }
+  for (int i = n - 1; i >= 0; i--) {
+    for (int j = 0; j < i; j++) {
+      if (a[j] > a[j + 1]) {
+        int repl = a[j];
+        a[j] = a[j + 1];
+        a[j + 1] = repl;
+      }
+    }
+  }
+  curr = list.first;
+  for (int i = 0; i < n; i++) {
+    curr->znachenie = a[i];
+    curr = curr->next;
+  }
 }
 
 int main(int argc, char *argv[]) {
@@ -161,9 +205,11 @@ int main(int argc, char *argv[]) {
       cin >> choice;
       switch (choice) {
         case 1:
-		  curr = list.first;
-		  if(curr != nullptr) print_list(curr);
-		  else cout<<"Список пуст!"<<endl;
+          curr = list.first;
+          if (curr != nullptr)
+            print_list(curr);
+          else
+            cout << "Список пуст!" << endl;
           menu();
           break;
         case 2:
@@ -171,15 +217,23 @@ int main(int argc, char *argv[]) {
           menu();
           break;
         case 3:
-					delete_element(list);
-					menu();
-					break;  
-				case 4:
-					find_pozitions(list);
-					menu();
-					break;	
+          delete_element(list);
+          menu();
+          break;
+        case 4:
+          find_pozitions(list);
+          menu();
+          break;
+        case 5:
+          replace_element(list);
+          menu();
+          break;
+        case 6:
+          sort_elements(list);
+          menu();
+          break;
         case 7:
-          cout << "Вы действительно хотите выйти из программы?(yes/no)"<<endl;
+          cout << "Вы действительно хотите выйти из программы?(yes/no)" << endl;
           string answer;
           cin >> answer;
           if (answer == "y" || answer == "yes" || answer == "Yes" ||
