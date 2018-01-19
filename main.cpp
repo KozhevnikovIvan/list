@@ -6,7 +6,7 @@
 using namespace std;
 
 struct Node {
-  int znachenie;
+  int znach;
   Node *next;
 };
 
@@ -15,8 +15,8 @@ struct List {
   Node *last;
 };
 
-void input(List &list, int znachenie) {
-  Node *curr = new Node{znachenie, nullptr};
+void input(List &list, int znach) {
+  Node *curr = new Node{znach, nullptr};
   if (list.first == nullptr)
     list.first = curr;
   else {
@@ -29,9 +29,9 @@ void input(List &list, int znachenie) {
 void print_list(Node *&curr) {
   do {
     if (curr->next != nullptr)
-      cout << curr->znachenie << " -> ";
+      cout << curr->znach << " -> ";
     else
-      cout << curr->znachenie << endl;
+      cout << curr->znach << endl;
     curr = curr->next;
   } while (curr != nullptr);
 }
@@ -50,17 +50,17 @@ void menu() {
 void addition_elements(List &list) {
   cout << "Введите новые элементы" << endl;
   string new_elements;
-  int znachenie = 0;
+  int znach = 0;
   cin.ignore(numeric_limits<streamsize>::max(), '\n');
   getline(cin, new_elements);
   for (int i = 0; i < new_elements.length(); i++) {
     if (new_elements[i] != ' ')
-      znachenie = znachenie * 10 + new_elements[i] - 48;
+      znach = znach * 10 + new_elements[i] - 48;
     else {
-      input(list, znachenie);
-      znachenie = 0;
+      input(list, znach);
+      znach = 0;
     }
-    if (i == new_elements.length() - 1) input(list, znachenie);
+    if (i == new_elements.length() - 1) input(list, znach);
   }
 }
 
@@ -71,7 +71,7 @@ void delete_element(List &list) {
   bool element_availability = false;
   Node *curr = list.first;
   Node *previous = nullptr;
-  if (curr->znachenie == deleting_element) {
+  if (curr->znach == deleting_element) {
     if ((curr == (list.first)) && (list.first != list.last)) {
       list.first = list.first->next;
       delete curr;
@@ -88,12 +88,12 @@ void delete_element(List &list) {
   previous = curr;
   curr = curr->next;
   while (curr != nullptr) {
-    if ((curr->znachenie == deleting_element) && (curr != list.last)) {
+    if ((curr->znach == deleting_element) && (curr != list.last)) {
       previous->next = curr->next;
       delete curr;
       element_availability = true;
     } else {
-      if ((curr->znachenie == deleting_element) && (curr == list.last)) {
+      if ((curr->znach == deleting_element) && (curr == list.last)) {
         list.last = previous;
         list.last->next = nullptr;
         delete curr;
@@ -115,7 +115,7 @@ void find_pozitions(List &list) {
   bool element_availability = false;
   Node *curr = list.first;
   while (curr != nullptr) {
-    if (curr->znachenie == finding_element) {
+    if (curr->znach == finding_element) {
       cout << pozitions << " ";
       pozitions++;
       element_availability = true;
@@ -134,7 +134,7 @@ void replace_element(List &list) {
   Node *curr = list.first;
   while (curr != nullptr) {
     if (i == pozition) {
-      curr->znachenie = new_element;
+      curr->znach = new_element;
       element_availability = true;
     }
     curr = curr->next;
@@ -154,7 +154,7 @@ void sort_elements(List &list) {
   curr = list.first;
   int a[n];
   for (int i = 0; i < n; i++) {
-    a[i] = curr->znachenie;
+    a[i] = curr->znach;
     curr = curr->next;
   }
   for (int i = n - 1; i >= 0; i--) {
@@ -168,13 +168,13 @@ void sort_elements(List &list) {
   }
   curr = list.first;
   for (int i = 0; i < n; i++) {
-    curr->znachenie = a[i];
+    curr->znach = a[i];
     curr = curr->next;
   }
 }
 
 int main(int argc, char *argv[]) {
-  int znachenie;
+  int znach;
   List list;
   list.first = nullptr;
   list.last = nullptr;
@@ -184,19 +184,19 @@ int main(int argc, char *argv[]) {
     if (argc == 2) {
       for (int i = 0; i < strlen(argv[1]); i++) {
         if ((argv[1][i] >= '0') && (argv[1][i] <= '9'))
-          znachenie = znachenie * 10 + argv[1][i] - 48;
+          znach = znach * 10 + argv[1][i] - 48;
         else {
           if (argv[1][i] == ',') {
-            input(list, znachenie);
-            znachenie = 0;
+            input(list, znach);
+            znach = 0;
           }
         }
-        if (i == strlen(argv[1]) - 1) input(list, znachenie);
+        if (i == strlen(argv[1]) - 1) input(list, znach);
       }
     } else {
       for (int i = 0; i < argc - 1; i++) {
-        znachenie = atoi(argv[i + 1]);
-        input(list, znachenie);
+        znach = atoi(argv[i + 1]);
+        input(list, znach);
       }
     }
     menu();
