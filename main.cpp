@@ -116,8 +116,8 @@ void find_pozitions(List &list) {
   Node *curr = list.first;
   while (curr != nullptr) {
     if (curr->znach == finding_element) {
-      cout << pozitions << " ";
       pozitions++;
+      cout << pozitions << " ";
       element_availability = true;
     } else
       pozitions++;
